@@ -101,7 +101,6 @@ const masterCSS = `
   }
 
   .wallet-body {
-    background-color: #222;
     margin: auto;
     width: calc(100% - 6px);
     height: calc(100% - 6px);

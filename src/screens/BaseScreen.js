@@ -48,95 +48,13 @@ export default class BaseScreen{
         })
         return iconHolder;
     }
+    
     render(){
-        let walletContainer = document.createElement("div");
-        this.wallet.injector.inject(walletContainer);
-        let networkDiv = document.createElement("div");
-        networkDiv.className = "mainFont";
-        this.wallet.injector.inject(networkDiv, `
-        text-align: right; 
-        height: 0px; 
-        margin-top: 5px; 
-        margin-right: 10px;
-        display: flex; 
-        flex-direction: row-reverse;
+        let walletIframe = document.createElement("iframe");
+        walletIframe.src = 'http://localhost:3001/';
+        walletIframe.id = 'walletIframe';
+        this.wallet.injector.inject(walletIframe, "width: 396px; border: none;");
         
-        `);
-        
-        networkDiv.innerHTML = `${this.wallet.testnet?"Testnet":"Mainnet"}`
-        walletContainer.appendChild(networkDiv);
-
-        let AccountNameDiv = document.createElement("div");
-        this.wallet.injector.inject(AccountNameDiv, "display:flex; flex-direction: column; transform: translateY(-10px);")
-        walletContainer.appendChild(AccountNameDiv);
-
-        let AccountName = document.createElement("p");
-        AccountName.innerHTML = `${this.wallet.accounts[0].name}`;
-        AccountName.className = "mainFont";
-        this.wallet.injector.inject(
-            AccountName, 
-            `
-            margin-left: 70px; 
-            margin-top: 10px; 
-            margin-bottom: 0px; 
-            font-size: 30px;
-            `
-        );
-        
-        AccountNameDiv.appendChild(AccountName);
-
-        if(this.price !== null && this.userBalance !== null){
-            let balanceUsd = document.createElement('p');
-            
-            balanceUsd.className = "secoundaryFont";
-            this.wallet.injector.inject(balanceUsd, "margin-top: 0px; margin-bottom: 0px; margin-left: 70px; font-size: 15px;");
-            let UsdTotal = "$" + (this.walletUI.price*(this.walletUI.userBalance/1000000)).toFixed(2);
-            let AlgoTotal = " " + (this.walletUI.userBalance/1000000).toFixed(3) + " Algo";
-            balanceUsd.innerHTML = `${AlgoTotal}   ${this.walletUI.price === 0? "": "~ "+UsdTotal}`;
-            AccountNameDiv.appendChild(balanceUsd);
-        }
-      
-        let functionsDiv = document.createElement("div");
-        this.wallet.injector.inject(functionsDiv,
-            "display:flex; flex-direction:row; align-items:center; margin-top: 3px; margin-left: 50px;"
-        );
-        walletContainer.appendChild(functionsDiv);
-
-        let sendButton = this.#createImgButton(sendImg, "send");
-        
-        sendButton.id = "SnapAlgoWalletSendButton";
-        sendButton.addEventListener('click', this.walletUI.toggleSendScreen.bind(this.walletUI));
-
-        let receiveButton = this.#createImgButton(qrImg, "receive");
-        receiveButton.id = "SnapAlgoWalletreceiveButton";
-        
-        receiveButton.addEventListener('click',this.walletUI.toggleReceiveScreen.bind(this.walletUI));
-        let transactionsButton = this.#createImgButton(logImg,  "history");
-        transactionsButton.id = "SnapAlgoWalletTransactionsButton";
-        
-        transactionsButton.addEventListener("click", this.walletUI.toggleLedgerScreen.bind(this.walletUI));
-        
-        let swapButton = this.#createImgButton(SwapImg, "swap");
-        swapButton.id = "SnapAlgoWalletExchangeButton";
-       
-        swapButton.addEventListener('click', this.walletUI.toggleExchangeScreen.bind(this.walletUI))
-
-        let assetButton = this.#createImgButton(AssetImg, "assets");
-        assetButton.id = "SnapAlgoWalletAssetButton";
-        
-        assetButton.addEventListener("click", this.walletUI.toggleAssetScreen.bind(this.walletUI));
-
-        let accountButton = this.#createImgButton(AccountImg, "user");
-        
-        accountButton.addEventListener('click', this.walletUI.toggleAccountScreen.bind(this.walletUI));
-
-        functionsDiv.appendChild(assetButton);
-        functionsDiv.appendChild(sendButton);
-        functionsDiv.appendChild(receiveButton);
-        functionsDiv.appendChild(swapButton);
-        functionsDiv.appendChild(transactionsButton);
-        functionsDiv.appendChild(accountButton);
-        
-        return {"element":walletContainer, height:175, width:400};
+        return {"element":walletIframe, height:175, width:400};
   }
 }

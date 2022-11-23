@@ -314,11 +314,6 @@ export default class WalletBubble{
     }
     render(screen){
       
-      
-      
-      
-      
-      
       this.setElement(screen.element);
       
       if(!screen.hasOwnProperty('silent')){

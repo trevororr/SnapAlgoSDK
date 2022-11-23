@@ -180,6 +180,8 @@ export class Wallet{
     }
       
     async #connect(){
+      window.addEventListener('message', (event) => { this.handlePostMessage(event.data) });
+
       this.bubble.importAccounts([this.accounts[this.enabledAccounts[0]]]);
       this.bubble.importNetwork(this.genisisId);
       this.enabled = true;
@@ -191,21 +193,22 @@ export class Wallet{
           </center>`,
           height: 250
       })
-      await window.ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: ['npm:algorand', {
-          method: 'setAccount',
-          params:{
-            address: 	this.enabledAccounts[0]
-          }
-        }]        
-      })
       this.bubble.walletUi.screen = 'base';
       await this.bubble.preLoad();
       await setTimeout(()=>this.bubble.close(), 500);
     }
 
-    
+    handlePostMessage(message){
+      if(message.enabled){
+        document.getElementById('walletIframe').contentWindow.postMessage(
+          {network: {genesisHash:this.genisisHash,
+                    genesisId:this.genisisId},
+          account:  this.account}
+          ,"*"
+        );
+      }
+    }
+
 
     #formatError(error){
       let err = error.message.split("\n");

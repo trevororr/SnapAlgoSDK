@@ -23,6 +23,8 @@
         <button id="swap">swap</button>
         <button id="getHistory">getHistory</button>
         <script>
+            window.addEventListener('message', (event) => { console.log(event.data) });</script>
+        <script>
             const snapalgo = new SnapAlgo.Wallet();
             document.getElementById('getHealthButton').addEventListener('click', () => {
                 getHealth();
